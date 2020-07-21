@@ -5,6 +5,11 @@ import java.util.List;
 
 import main.goods.Goods;
 
+/**
+ * 商品管理クラス
+ * @author nakamuratakasi
+ *
+ */
 public class VendMachineImpl implements VendMachine {
 
 	@Override
@@ -50,6 +55,12 @@ public class VendMachineImpl implements VendMachine {
 				return "なかなか美味しい";
 			}
 		};
+	}
+
+	@Override
+	public List<String> getGoodsListMessage() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 
 }

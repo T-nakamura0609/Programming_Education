@@ -1,7 +1,5 @@
 package main.machine;
 
-import main.goods.Goods;
-
 public class CoinControlImpl implements CoinControl {
 
 	private Integer totalCoin;
@@ -18,15 +16,21 @@ public class CoinControlImpl implements CoinControl {
 	}
 
 	@Override
+	public void subCoin(Integer coin) {
+		// TODO 自動生成されたメソッド・スタブ
+		totalCoin -= coin;
+	}
+
+	@Override
 	public Integer getTotalCoin() {
 		// TODO 自動生成されたメソッド・スタブ
 		return this.totalCoin;
 	}
 
 	@Override
-	public Boolean isBuy(Goods goods) {
+	public Boolean isBuy(Integer price) {
 		// TODO 自動生成されたメソッド・スタブ
-		if(totalCoin >= goods.getPrice()) {
+		if(totalCoin >= price) {
 			return true;
 		}
 		return false;
@@ -38,5 +42,7 @@ public class CoinControlImpl implements CoinControl {
 		totalCoin = 0;
 
 	}
+
+
 
 }

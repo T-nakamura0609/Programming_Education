@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import main.exeption.VendingExeption;
 import main.goods.Goods;
 import main.menue.CommandMenue;
 
@@ -44,7 +45,11 @@ public class MachineMain {
 				break;
 
 			case ChoiceItem:
-				choiceItem();
+				Goods item = choiceItem();
+				if(item != null) {
+					openItem(item);
+				}
+
 				break;
 			case InputCoin:
 				coinCommand();
@@ -62,17 +67,13 @@ public class MachineMain {
 	private CommandMenue command() {
 		// 商品一覧表示
 		System.out.println("################");
-//		System.out.println("ここに商品を表示");
-		for(Goods goods: venmachine.getGoodsList()) {
-			System.out.println(goods.getGoodsInfo());
-		}
-		System.out.println("################");
 		System.out.println("");
 
 		System.out.println("### 操作を選んでください ###");
 		System.out.println("0:終了する");
 		System.out.println("1:入金する");
 		System.out.println("2:商品を選ぶ");
+		System.out.println("3:商品管理");
 		System.out.print(">");
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -81,7 +82,6 @@ public class MachineMain {
 			String str = br.readLine();
 			reslt = Integer.valueOf(str);
 		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 			return CommandMenue.Exit;
 		}
@@ -90,6 +90,7 @@ public class MachineMain {
 		case 0: return CommandMenue.Exit;
 		case 1: return CommandMenue.InputCoin;
 		case 2: return CommandMenue.ChoiceItem;
+		case 3: return CommandMenue.Maintenance;
 		default: return CommandMenue.Exit;
 		}
 	}
@@ -108,7 +109,6 @@ public class MachineMain {
 			String str = br.readLine();
 			reslt = Integer.valueOf(str);
 		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 			reslt=0;
 		}catch(NumberFormatException ne) {
@@ -123,34 +123,86 @@ public class MachineMain {
 
 	/**
 	 * 商品選択
+	 * @return
 	 */
-	private void choiceItem() {
+	private Goods choiceItem() {
 		Integer item;
 
-		System.out.println("### 商品を選んでください ###");
-		System.out.print(">");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			String str = br.readLine();
-			item = Integer.valueOf(str);
-		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-			item = 0;
-		} catch (NumberFormatException e) {
-			// TODO: handle exception
-			item = 0;
+		while (true) {
+			System.out.println("### 商品を選んでください ###");
+			System.out.println("0:選択をやめる");
+			System.out.println("################");
+			int num = 1;
+			for (String iteminfo : venmachine.getGoodsListMessage()) {
+				System.out.println(iteminfo);
+			}
+			System.out.println("################");
+			System.out.println("現在の入金額は" + coinctrl.getTotalCoin() + "円です");
+			System.out.print(">");
+			// コンソール入力
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				String str = br.readLine();
+				item = Integer.valueOf(str);
+			} catch (IOException e) {
+				e.printStackTrace();
+				item = 0;
+			} catch (NumberFormatException e) {
+				item = 0;
+			}
+			if (item == 0) {
+				// 商品選択とりやめ
+				return null;
+			}
+
+			try {
+				Goods goods = venmachine.getGoods(item);
+				return goods;
+			} catch (VendingExeption e) {
+				// 商品を選べなかった場合は再度商品選択へ戻る
+				System.out.println(e.getMessage());
+				System.out.println();
+			}
 		}
 
-		Goods goods = venmachine.getGoods(item);
-		if(coinctrl.isBuy(goods)) {
+	}
+
+	// 商品開封
+	private void openItem(Goods goods) {
+		while (true) {
+			int item;
 			System.out.println("選んだ商品はこれです:" + goods.getName());
-			System.out.println("中身は？:" + goods.open());
-		}else {
-			System.out.println("金額が不足しています");
+			System.out.println("### 商品をあけますか？ ###");
+			System.out.println("0:あけない");
+			System.out.println("1:あける");
+			System.out.print(">");
+			// コンソール入力
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				String str = br.readLine();
+				item = Integer.valueOf(str);
+			} catch (IOException e) {
+				e.printStackTrace();
+				item=0;
+			} catch (NumberFormatException e) {
+				item=0;
+			}
+
+			if (item == 0) {
+				// 商品選択とりやめ
+				return;
+			}else if(item == 1) {
+				System.out.println("中身は:" + goods.open());
+				return;
+			}
 		}
 
-
+	}
+	
+	private void maintenance() {
+		// 現在の在庫数一覧表示
+		// 補充したい商品選択
+		// 補充
 	}
 
 }

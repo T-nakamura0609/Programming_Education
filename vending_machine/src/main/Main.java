@@ -1,10 +1,10 @@
 package main;
 
+import main.goods.GoodsFactory;
 import main.machine.CoinControl;
 import main.machine.CoinControlImpl;
 import main.machine.MachineMain;
-import main.machine.VendMachine;
-import main.machine.VendMachineImpl;
+import main.machine.StockManagerImpl;
 
 public class Main {
 
@@ -14,8 +14,16 @@ public class Main {
 	}
 
 	private void prgMain() {
-		VendMachine vmachine = new VendMachineImpl();
 		CoinControl cctrl = new CoinControlImpl();
+
+//		VendMachine vmachine = new VendMachineImpl();
+		StockManagerImpl vmachine = new StockManagerImpl();
+		vmachine.addFactory(new GoodsFactory("コーラ", 120, "爽やかなひととき"));
+		vmachine.addFactory(new GoodsFactory("ファンタ", 150, "スカっと爽やか"));
+		vmachine.addFactory(new GoodsFactory("レッドブル", 250, "翼を授ける"));
+		vmachine.setCoinman(cctrl);
+
+
 		MachineMain machine = new MachineMain();
 
 		machine.setCoinctrl(cctrl);
