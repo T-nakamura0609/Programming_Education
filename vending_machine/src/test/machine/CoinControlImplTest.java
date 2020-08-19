@@ -8,20 +8,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.machine.CoinControlImpl;
-import main.machine.StockManagerImpl;
-import mockit.Mocked;
-
-class StockManagerTest {
-
-	private static StockManagerImpl target;
-
-	@Mocked
-	CoinControlImpl coin_mock;
+class CoinControlImplTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		target = new StockManagerImpl();
 	}
 
 	@AfterAll
@@ -37,12 +27,32 @@ class StockManagerTest {
 	}
 
 	@Test
-	void testGetGoodsList() {
+	void testCoinControlImpl() {
 		fail("まだ実装されていません");
 	}
 
 	@Test
-	void testGetGoods() {
+	void testInputCoin() {
+		fail("まだ実装されていません");
+	}
+
+	@Test
+	void testSubCoin() {
+		fail("まだ実装されていません");
+	}
+
+	@Test
+	void testGetTotalCoin() {
+		fail("まだ実装されていません");
+	}
+
+	@Test
+	void testIsBuy() {
+		fail("まだ実装されていません");
+	}
+
+	@Test
+	void testRejectCoin() {
 		fail("まだ実装されていません");
 	}
 
